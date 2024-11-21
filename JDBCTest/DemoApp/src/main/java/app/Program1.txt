@@ -1,0 +1,33 @@
+package app;
+
+import java.sql.Statement;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+
+public class Program {
+    
+    public static void main(String[] args) throws Exception {
+
+        //step 1:create connection with the databases.
+        Connection con = DriverManager.getConnection("jdbc:mysql://dac28.local/cdac1","root","password");
+
+        //step 2:create Statemnt to fire the query.
+        Statement statement = con.createStatement();
+
+        statement.executeUpdate("update emp1 set pan = 'p006' where empno = 2");
+
+        //step 3:execute the query.
+        ResultSet rs = statement.executeQuery("select empno, ename, sal, deptno,city, pan from emp1");
+
+        while (rs.next()) {
+            System.out.printf("%d %s %f %f %s %s\n",rs.getInt(1),rs.getString(2),rs.getDouble(3),rs.getDouble(4),rs.getString(5),rs.getString(6));
+        }
+
+        rs.close();
+        statement.close();
+        con.close();
+    }
+
+}
+

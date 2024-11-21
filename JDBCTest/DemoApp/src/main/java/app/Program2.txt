@@ -1,0 +1,31 @@
+package app;
+
+import java.util.Scanner;
+import java.sql.DriverManager;
+
+public class Program {
+    
+    public static void main(String[] args) throws Exception {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter the empno to display : ");
+        int empno = sc.nextInt();
+
+        //step 1:create connection with the databases.
+        var con = DriverManager.getConnection("jdbc:mysql://dac28.local/cdac1","root","password");
+
+        //step 2:create Statement to fire query
+        var pstatement = con.prepareStatement("select empno, ename, sal, deptno,city, pan from emp1 where empno = ?");
+        pstatement.setInt(1, empno);
+        var result = pstatement.executeQuery();
+        while (result.next()) {
+            System.out.printf("%d %s %f %f %s %s\n",result.getInt(1),result.getString(2),result.getDouble(3),result.getDouble(4),result.getString(5),result.getString(6));
+        }
+
+        result.close();
+        pstatement.close();
+        con.close();
+        sc.close();
+    }
+
+}
+
